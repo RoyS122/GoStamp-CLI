@@ -12,7 +12,8 @@ import (
 )
 
 type CompressionParameter struct {
-	Watermark *os.File
+	Watermark string
+	MarkAlpha uint8
 	Quality   int
 	Format    string
 	License   string
