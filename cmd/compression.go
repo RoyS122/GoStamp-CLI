@@ -41,7 +41,9 @@ func CompressFile(origin, dst *os.File, params CompressionParameter) error {
 			Quality:  float32(q),
 		})
 	case "png":
+
 		enc := png.Encoder{CompressionLevel: png.BestCompression}
+
 		err = enc.Encode(dst, img)
 	case "jpg", "jpeg":
 		err = jpeg.Encode(dst, img, &jpeg.Options{Quality: int(q)})

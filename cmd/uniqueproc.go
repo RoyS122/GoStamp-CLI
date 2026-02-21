@@ -3,12 +3,34 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
 func UniqueProcess(file_info os.FileInfo, outputpath string, output_size, origin_size *int64, args []string, cp CompressionParameter) {
 	*origin_size += file_info.Size()
+	var dst *os.File
+	var err error
 
-	dst, err := os.Create(outputpath)
+	dststat, _ := os.Stat(outputpath)
+	if dststat.IsDir() {
+		baseName := filepath.Base(file_info.Name())
+		nameWithoutExt := strings.TrimSuffix(baseName, filepath.Ext(baseName))
+
+		targetExt := format
+		if targetExt == "" {
+			targetExt = "webp"
+		}
+
+		finalName := fmt.Sprintf("%s.%s", nameWithoutExt, targetExt)
+
+		finalPath := filepath.Join(outputpath, finalName)
+		outputpath = finalPath
+		dst, err = os.Create(finalPath)
+	} else {
+		dst, err = os.Create(outputpath)
+	}
+
 	if err != nil {
 		fmt.Println("Error,", err)
 		return
@@ -37,5 +59,9 @@ func UniqueProcess(file_info os.FileInfo, outputpath string, output_size, origin
 
 	file.Close()
 	dst.Close()
+
+	if cp.License != "" {
+		AddMetadata(outputpath, MetadataParameter{Title: cp.License})
+	}
 
 }
