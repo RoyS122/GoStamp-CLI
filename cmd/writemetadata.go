@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	metajpeg "gostampcli/metadata/jpeg"
 	metapng "gostampcli/metadata/png"
 )
 
@@ -16,6 +17,10 @@ type MetadataParameter struct {
 func AddMetadata(dst string, mparams MetadataParameter) {
 
 	if err := metapng.PushMetadata(dst, "title", mparams.Title); err != nil {
+		fmt.Println("err,", err)
+	}
+
+	if err := metajpeg.PushMetadata(dst, "title", mparams.Title); err != nil {
 		fmt.Println("err,", err)
 	}
 
