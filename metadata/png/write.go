@@ -22,6 +22,8 @@ const (
 
 func PushMetadata(dst_path, field, content string) error { // Add metadata on a png file (as string)
 
+	fmt.Println(ReadMetadata(dst_path))
+
 	file, err := os.ReadFile(dst_path)
 	if err != nil {
 		return err
@@ -81,6 +83,7 @@ func PushMetadata(dst_path, field, content string) error { // Add metadata on a 
 	}
 
 	fmt.Println("Just pushed : ", field, content)
-
+	mt_debug := ReadMetadata(dst_path)
+	fmt.Println("title:", mt_debug[0].Title, "content:", mt_debug[0].Content)
 	return nil
 }

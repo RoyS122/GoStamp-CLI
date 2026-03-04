@@ -97,4 +97,4 @@ func PushMetadata(dst_path, field, content string) error { // Add metadata on a 
 	}
 
 	return nil
-} // It's work :)
+}
